@@ -10,6 +10,8 @@ namespace Slot_Machine
     {
         static void Main(string[] args)
         {
+            var playfield = new PlayField();
+            playfield.Initialize();
         }
     }
 }
