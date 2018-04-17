@@ -175,6 +175,7 @@ namespace Slot_Machine
 
         private void EndTheGame()
         {
+            Console.Clear();
             Console.WriteLine("You are out of money. Thanks for playing!");
             Console.ReadKey();
         }
