@@ -8,6 +8,8 @@ namespace Slot_Machine
 {
     public class Calculator
     {
+        readonly Random _random = new Random();
+
         public double CalculateWinRate(List<char> results)
         {
             double calculatedWinRatio = 0;
@@ -33,8 +35,9 @@ namespace Slot_Machine
 
             return calculatedWinRatio;
         }
-        public char GetSymbol(int randomNumber)
+        public char GetSymbol()
         {
+            int randomNumber = _random.Next(1, 100);
             //Returns Wildcard(5% chance)
             if (randomNumber <= 5)
             {

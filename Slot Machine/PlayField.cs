@@ -12,14 +12,13 @@ namespace Slot_Machine
 {
     class PlayField
     {
-        private Bank bank;
-        private double stake;
-        private char[,] gamefield;
-        private Random random;
+        private Bank _bank;
+        private double _stake;
+        private char[,] _gamefield;
         private const int ROWS = 4;
         private const int COLUMNS = 3;
-        private Calculator calculator;
-        private double currentwin;
+        private Calculator _calculator;
+        private double _currentwin;
 
         public void Initialize()
         {
@@ -38,16 +37,13 @@ namespace Slot_Machine
             }
 
             //initialize bank
-            bank = new Bank(deposit);
+            _bank = new Bank(deposit);
 
             //gamefield is place for the rolled chars
-            gamefield = new char[ROWS,COLUMNS];
-
-            //Initialize Random
-            random = new Random();
+            _gamefield = new char[ROWS,COLUMNS];
 
             //Initialize calculator
-            calculator = new Calculator();
+            _calculator = new Calculator();
 
             StartBetting();
 
@@ -55,22 +51,22 @@ namespace Slot_Machine
 
         private void StartBetting()
         {
-            if (bank.Balance <= 0)
+            if (_bank.Balance <= 0)
             {
                 EndTheGame();
             }
             else
             {
                 Console.Clear();
-                Console.WriteLine($"Your actual account balance: {bank.Balance}");
+                Console.WriteLine($"Your actual account balance: {_bank.Balance:C}");
                 Console.WriteLine("Enter stake amount:");
-                stake = -1;
+                _stake = -1;
                 //checks if stake is not higher than bank balance
-                while (stake < 0 || stake > bank.Balance)
+                while (_stake < 0 || _stake > _bank.Balance)
                 {
                     try
                     {
-                        stake = Convert.ToDouble(Console.ReadLine());
+                        _stake = Convert.ToDouble(Console.ReadLine());
                     }
                     catch
                     {
@@ -88,13 +84,11 @@ namespace Slot_Machine
             {
                 for (int y = 0; y < COLUMNS; y++)
                 {
-                    int randomNumber = random.Next(1, 100);
-                    char symbolToPaste = calculator.GetSymbol(randomNumber);
-
-                    gamefield[x, y] = symbolToPaste;
+                    //Draw random symbol
+                    _gamefield[x, y] = _calculator.GetSymbol();
 
                     //Displays Playfield
-                    Console.Write(gamefield[x,y]);
+                    Console.Write(_gamefield[x,y]);
                 }
                 Console.WriteLine();
             }
@@ -105,75 +99,75 @@ namespace Slot_Machine
         {
             List<char> results = new List<char>();
             double ratio = 0;
-            currentwin = 0;
+            _currentwin = 0;
             //loop is going trough each line
             for (int x = 0; x < ROWS; x++)
             {
-                results.Add(gamefield[x,0]);
-                results.Add(gamefield[x, 1]);
-                results.Add(gamefield[x, 2]);
+                results.Add(_gamefield[x,0]);
+                results.Add(_gamefield[x, 1]);
+                results.Add(_gamefield[x, 2]);
 
                 //win if:
                 //cell 0 and cell 1 or 2 are stars
-                if (gamefield[x, 0] == '*')
+                if (_gamefield[x, 0] == '*')
                 {
-                    if (gamefield[x, 1] == '*')
+                    if (_gamefield[x, 1] == '*')
                     {
-                        ratio += calculator.CalculateWinRate(results);
+                        ratio += _calculator.CalculateWinRate(results);
                     }
 
-                    else if (gamefield[x, 2] == '*')
+                    else if (_gamefield[x, 2] == '*')
                     {
-                        ratio += calculator.CalculateWinRate(results);
+                        ratio += _calculator.CalculateWinRate(results);
                     }
                     //cell 0 is star and rest are equal
-                    else if (gamefield[x, 1] == gamefield[x, 2])
+                    else if (_gamefield[x, 1] == _gamefield[x, 2])
                     {
-                        ratio += calculator.CalculateWinRate(results);
+                        ratio += _calculator.CalculateWinRate(results);
                     }
                 }
                 //cell 1 and 2 are stars
-                else if (gamefield[x, 1] == '*')
+                else if (_gamefield[x, 1] == '*')
                 {
-                    if (gamefield[x, 2] == '*')
+                    if (_gamefield[x, 2] == '*')
                     {
-                        ratio += calculator.CalculateWinRate(results);
+                        ratio += _calculator.CalculateWinRate(results);
                     }
                     //cell 1 is star and cell 0 and 2 are equal
-                    if (gamefield[x, 0] == gamefield[x, 2])
+                    if (_gamefield[x, 0] == _gamefield[x, 2])
                     {
-                        ratio += calculator.CalculateWinRate(results);
+                        ratio += _calculator.CalculateWinRate(results);
                     }
                 }
                 //cell 2 is star and cell 0 and 1 are equal
-                else if (gamefield[x, 2] == '*')
+                else if (_gamefield[x, 2] == '*')
                 {
-                    if (gamefield[x, 0] == gamefield[x, 1])
+                    if (_gamefield[x, 0] == _gamefield[x, 1])
                     {
-                        ratio += calculator.CalculateWinRate(results);
+                        ratio += _calculator.CalculateWinRate(results);
                     }
                 }
                 //all cells are the same and none of them is a star
-                else if (gamefield[x,0] == gamefield[x,1] && gamefield[x,1] == gamefield[x,2])
+                else if (_gamefield[x,0] == _gamefield[x,1] && _gamefield[x,1] == _gamefield[x,2])
                 {
-                    ratio += calculator.CalculateWinRate(results);
+                    ratio += _calculator.CalculateWinRate(results);
                 }
 
-                currentwin += ratio * stake;
+                _currentwin += ratio * _stake;
 
                 //reset ratio and results list for each loop
                 ratio = 0;
                 results.Clear();
             }
-            bank.AddWin(currentwin, stake);
+            _bank.AddWin(_currentwin, _stake);
             DisplayResults();
 
         }
 
         private void DisplayResults()
         {
-            Console.WriteLine($"You have won: {currentwin}");
-            Console.WriteLine($"Current balance is: {bank.Balance}");
+            Console.WriteLine($"You have won: {_currentwin:C}");
+            Console.WriteLine($"Current balance is: {_bank.Balance:C}");
             Console.WriteLine("Click any key to continue");
             Console.ReadKey();
             StartBetting();
