@@ -43,10 +43,11 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Bank.cs" />
-    <Compile Include="Calculator.cs" />
     <Compile Include="PlayField.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Services\Calculator.cs" />
+    <Compile Include="Services\ICalculator.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Slot_Machine.Services;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -10,7 +11,8 @@ namespace Slot_Machine
     {
         static void Main(string[] args)
         {
-            var playfield = new PlayField();
+            //Injecting new calculator as service
+            var playfield = new PlayField(new Calculator());
             playfield.Initialize();
         }
     }

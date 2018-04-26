@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Slot_Machine.Services;
+using System;
 using System.CodeDom;
 using System.CodeDom.Compiler;
 using System.Collections.Generic;
@@ -17,8 +18,13 @@ namespace Slot_Machine
         private char[,] _gamefield;
         private const int ROWS = 4;
         private const int COLUMNS = 3;
-        private Calculator _calculator;
+        private ICalculator _calculator;
         private double _currentwin;
+
+        public PlayField(ICalculator calculator)
+        {
+            _calculator = calculator;
+        }
 
         public void Initialize()
         {
@@ -40,13 +46,18 @@ namespace Slot_Machine
             _bank = new Bank(deposit);
 
             //gamefield is place for the rolled chars
-            _gamefield = new char[ROWS,COLUMNS];
+            _gamefield = new char[ROWS, COLUMNS];
 
             //Initialize calculator
             _calculator = new Calculator();
 
-            StartBetting();
+            StartGame();
 
+        }
+
+        public void StartGame()
+        {
+            StartBetting();
         }
 
         private void StartBetting()

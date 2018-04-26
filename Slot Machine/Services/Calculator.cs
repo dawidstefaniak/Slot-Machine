@@ -1,12 +1,13 @@
-﻿using System;
+﻿using Slot_Machine.Services;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Slot_Machine
+namespace Slot_Machine.Services
 {
-    public class Calculator
+    public class Calculator : ICalculator
     {
         readonly Random _random = new Random();
 
